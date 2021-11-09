@@ -1,5 +1,5 @@
-from LoginPage import *
-from Items import *
+from pages.UI.LoginPage import *
+from pages.System.Items import *
 root = Tk()
 root.title("python GUI")
 root.geometry("600x600+500+200")

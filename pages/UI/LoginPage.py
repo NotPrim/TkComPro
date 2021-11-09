@@ -5,7 +5,7 @@ from tkinter import messagebox
 # สร้างหน้าต่าง login
 def LoginWindow(adminLoggedin: BooleanVar):
     # โหลดข้อมูลของ admin
-    adminFile = open("admin.txt", "r")
+    adminFile = open("assets/user/admin.txt", "r")
     adminUser, adminPass = adminFile.read().split(',')
     adminFile.close()
 

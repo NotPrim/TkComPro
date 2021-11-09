@@ -1,7 +1,7 @@
 itemDict = dict()
 
 
-def loadItemList(filename: str = "ItemList.csv") -> dict:
+def loadItemList(filename: str = "assets/list/ItemList.csv") -> dict:
     temp = dict()
     file = open(filename, "r")
     for line in file.readlines():
