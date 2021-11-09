@@ -1,8 +1,25 @@
+from tkinter.font import BOLD
 from pages.UI.LoginPage import *
 from pages.System.Items import *
 root = Tk()
 root.title("python GUI")
-root.geometry("600x600+500+200")
+root.geometry("1000x600+500+200")
+
+# หาสินค้า
+def searchItem(*args):
+    print(txt.get())
+def leave(*args):
+    root.focus()
+    
+# ช่องหาสินค้า
+txt = StringVar()
+txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
+search = Entry(root, width=43, textvariable=txt)
+search.pack(padx=5,pady=10,anchor=E)
+search.bind("<Leave>",leave)
+
+# goSearch = Button(left, text="Go!", bg="#7ADC6F", activebackground="#61b058", padx=10)
+# goSearch.grid(row=0, column=2)
 
 # ตัวแบ่งหน้าจอ
 pane = PanedWindow(root)
@@ -33,7 +50,8 @@ def loginToggle(*args):
         myMenu.add_cascade(label="Remove")
     else:
         myMenu.delete(1, 4)
-        myMenu.add_cascade(label="Login", command=lambda: LoginWindow(adminLoggedin))
+        myMenu.add_cascade(
+            label="Login", command=lambda: LoginWindow(adminLoggedin))
 
 
 # ตัวแปรในระบบ
@@ -47,19 +65,11 @@ root.config(menu=myMenu)
 myMenu.add_cascade(label="Login", command=lambda: LoginWindow(adminLoggedin))
 
 
-# หาสินค้า
-def searchItem(*args):
-    print(txt.get())
+productLabel = Label(left,text="Product",bg="red",width=100,foreground="white")
+productLabel.grid(row=0,column=0)
 
+productLabel = Label(right,text="Order",bg="green",width=35,foreground="white")
+productLabel.grid(row=0,column=0)
 
-# ช่องหาสินค้า
-searchLabel = Label(left, text="search ")
-searchLabel.grid(row=0, column=0)
-txt = StringVar()
-txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
-search = Entry(left, width=40, textvariable=txt)
-search.grid(row=0, column=1)
-# goSearch = Button(left, text="Go!", bg="#7ADC6F", activebackground="#61b058", padx=10)
-# goSearch.grid(row=0, column=2)
 
 root.mainloop()
