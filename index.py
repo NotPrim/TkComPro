@@ -1,4 +1,5 @@
 from tkinter.font import BOLD
+from types import CellType
 from pages.UI.LoginPage import *
 from pages.System.Items import *
 root = Tk()
@@ -68,6 +69,21 @@ myMenu.add_cascade(label="Login", command=lambda: LoginWindow(adminLoggedin))
 
 productLabel = Label(left,text="Product",bg="red",width=100,foreground="white")
 productLabel.grid(row=0,column=0)
+
+sb = Scrollbar(left)
+table = ttk.Treeview(left)
+table['columns'] = ('ID','Name','Price')
+
+table.column("#0",width=0,stretch=NO)
+table.column("ID",anchor=CENTER,width=80)
+table.column("Name",anchor=CENTER,width=80)
+table.column("Price",anchor=CENTER,width=80)
+
+table.heading("#0",text="",anchor=CENTER)
+table.heading("ID",text="ID",anchor=CENTER)
+table.heading("Name",text="Name",anchor=CENTER)
+table.heading("Price",text="Price",anchor=CENTER)
+
 
 productLabel = Label(right,text="Order",bg="green",width=35,foreground="white")
 productLabel.grid(row=0,column=0)
