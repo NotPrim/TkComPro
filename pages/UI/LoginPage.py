@@ -18,6 +18,7 @@ def LoginWindow(adminLoggedin: BooleanVar):
             messagebox.showerror("เข้าสู่ระบบไม่สำเร็จ", "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง")
         window.destroy()
 
+    # สร้างหน้าต่างเข้าสู่ระบบ
     window = Tk()
     window.resizable(0, 0)
     window.title("เข้าสู่ระบบ")

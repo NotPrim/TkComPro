@@ -1,16 +1,10 @@
-itemDict = dict()
-
-
 def loadItemList(filename: str = "assets/list/ItemList.csv") -> dict:
     temp = dict()
     file = open(filename, "r")
-    for line in file.readlines():
+    for line in file:
         name, price = line.split(',')
         temp[name] = int(price)
     return temp
-
-
-itemDict = loadItemList()
 
 
 # เรียงลำดับของสินค้าตามคำค้นหา
@@ -31,6 +25,8 @@ def searchSort(search: str) -> dict:
                 itemSort[i], itemSort[j] = itemSort[j], itemSort[i]
     return {k: itemDict[k] for k in itemSort}
 
+
+itemDict = loadItemList()
 
 if __name__ == "__main__":
     itemDict = searchSort('s')

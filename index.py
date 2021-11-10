@@ -8,13 +8,11 @@ root.geometry("800x600+500+200")
 root.resizable(0, 0)
 
 # หาสินค้า
-
-
 def searchItem(*args):
-    itemDict = searchSort(txt.get())
-    for i in table.get_children():
+    itemDict = searchSort(txt.get()) # เรียงลำดับรายการใหม่
+    for i in table.get_children(): # ลบรายการทั้งหมดออก
         table.delete(i)
-    for i, key in enumerate(itemDict, 1):
+    for i, key in enumerate(itemDict, 1): # ใส่กลับเข้าไปใหม่
         table.insert(parent='', index='end', iid=i, text='',values=(i, key, itemDict[key]))
 
 
@@ -23,14 +21,11 @@ def leave(*args):
 
 
 # ช่องหาสินค้า
-
 txt = StringVar()
 txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
 search = Entry(root, width=44, textvariable=txt)
 search.pack(padx=5, pady=10, anchor=E)
 search.bind("<Leave>", leave)
-# goSearch = Button(left, text="Go!", bg="#7ADC6F", activebackground="#61b058", padx=10)
-# goSearch.grid(row=0, column=2)
 
 # ตัวแบ่งหน้าจอ
 pane = PanedWindow(root)
@@ -54,7 +49,6 @@ def loginToggle(*args):
     if adminLoggedin.get():
         myMenu.delete(1)
         # ปุ่ม logout เมื่อกดจะให้ยืนยันอีกที
-        
         myMenu.add_cascade(label="เพิ่มข้อมูล")
         myMenu.add_cascade(label="แก้ไขข้อมูล")
         myMenu.add_cascade(label="ลบข้อมูล")
@@ -62,8 +56,7 @@ def loginToggle(*args):
                            command=lambda: adminLoggedin.set(False) if messagebox.askyesno("ออกจากระบบ?", "คุณแน่ใจใช่ไหมที่จะออกจากระบบ?") else None)
     else:
         myMenu.delete(1, 4)
-        myMenu.add_cascade(
-            label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
+        myMenu.add_cascade(label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
 
 # ตัวแปรในระบบ
@@ -73,16 +66,14 @@ adminLoggedin.trace_add("write", loginToggle)
 # สร้างเมนู
 myMenu = Menu()
 root.config(menu=myMenu)
+
 # เพิ่มเมนูหลัก
 myMenu.add_cascade(label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
-
-productLabel = Label(left, text="รายการสินค้า", bg="red",
-                     width=74, foreground="white")
+productLabel = Label(left, text="รายการสินค้า", bg="red", width=74, foreground="white")
 productLabel.grid(row=0, column=0)
 
-
-# Table
+# สร้างตารางสำหรับกดสั่งสินค้า
 table = ttk.Treeview(left, height=300)
 table['columns'] = ('ID', 'Name', 'Price')
 
@@ -97,20 +88,20 @@ table.heading("Name", text="ชื่อเมนู", anchor=W)
 table.heading("Price", text="ราคา (บาท)", anchor=W)
 
 
+# เลือกสินค้า
 def OnDoubleClick(event):
     items = table.identify('item', event.x, event.y)
     print("Key : ", table.item(items, "values"))
 
 
+# เอารายการใส่ลงตาราง
 for i, key in enumerate(itemDict, 1):
-    table.insert(parent='', index='end', iid=i, text='',
-                 values=(i, key, itemDict[key]))
-table.bind("<Double-1>", OnDoubleClick)
+    table.insert(parent='', index='end', iid=i, text='', values=(i, key, itemDict[key]))
+
+table.bind("<Double-1>", OnDoubleClick) # เมื่อดับเบิลคลิกที่สินค้าจะเรียก OnDoubleClick
 table.grid()
 
-
-productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",
-                     width=38, foreground="white")
+productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",width=38, foreground="white")
 productLabel.grid(row=0, column=0)
 
 root.mainloop()
