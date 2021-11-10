@@ -4,21 +4,26 @@ from pages.UI.LoginPage import *
 from pages.System.Items import *
 root = Tk()
 root.title("python GUI")
-root.geometry("1000x600+500+200")
-root.resizable(0,0)
+root.geometry("800x600+500+200")
+root.resizable(0, 0)
 
 # หาสินค้า
+
+
 def searchItem(*args):
     print(txt.get())
+
+
 def leave(*args):
     root.focus()
-    
+
+
 # ช่องหาสินค้า
 txt = StringVar()
 txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
-search = Entry(root, width=43, textvariable=txt)
-search.pack(padx=5,pady=10,anchor=E)
-search.bind("<Leave>",leave)
+search = Entry(root, width=44, textvariable=txt)
+search.pack(padx=5, pady=10, anchor=E)
+search.bind("<Leave>", leave)
 
 # goSearch = Button(left, text="Go!", bg="#7ADC6F", activebackground="#61b058", padx=10)
 # goSearch.grid(row=0, column=2)
@@ -28,14 +33,14 @@ pane = PanedWindow(root)
 pane.pack(fill=BOTH, expand=1)
 
 # เพื่มพื้นที่ฝั่งซ้าย
-left = ttk.Frame(pane)
-left['borderwidth'] = 10
+left = ttk.Frame(pane, width=200)
+left['borderwidth'] = 0
 left['relief'] = 'solid'
 pane.add(left)
 
 # เพื่มพื้นที่ฝั่งขวา
-right = ttk.Frame(pane, width=300)
-right['borderwidth'] = 10
+right = ttk.Frame(pane)
+right['borderwidth'] = 0
 right['relief'] = 'solid'
 pane.add(right)
 
@@ -67,26 +72,34 @@ root.config(menu=myMenu)
 myMenu.add_cascade(label="Login", command=lambda: LoginWindow(adminLoggedin))
 
 
-productLabel = Label(left,text="Product",bg="red",width=100,foreground="white")
-productLabel.grid(row=0,column=0)
-
-sb = Scrollbar(left)
-table = ttk.Treeview(left)
-table['columns'] = ('ID','Name','Price')
-
-table.column("#0",width=0,stretch=NO)
-table.column("ID",anchor=CENTER,width=80)
-table.column("Name",anchor=CENTER,width=80)
-table.column("Price",anchor=CENTER,width=80)
-
-table.heading("#0",text="",anchor=CENTER)
-table.heading("ID",text="ID",anchor=CENTER)
-table.heading("Name",text="Name",anchor=CENTER)
-table.heading("Price",text="Price",anchor=CENTER)
+productLabel = Label(left, text="Product", bg="red",
+                     width=74, foreground="white")
+productLabel.grid(row=0, column=0)
 
 
-productLabel = Label(right,text="Order",bg="green",width=35,foreground="white")
-productLabel.grid(row=0,column=0)
+# Table
+table = ttk.Treeview(left, height=300)
+table['columns'] = ('ID', 'Name', 'Price')
+
+table.column("#0", width=0, stretch=NO)
+table.column("ID", anchor=W, width=80)
+table.column("Name", anchor=W, width=360)
+table.column("Price", anchor=W, width=80)
+
+table.heading("#0", text="", anchor=W)
+table.heading("ID", text="ID", anchor=W)
+table.heading("Name", text="Name", anchor=W)
+table.heading("Price", text="Price", anchor=W)
+
+for i in range(1, 21):
+    table.insert(parent='', index='end', iid=i, text='',
+                 values=(i, 'Ninja'+str(i), 10+i))
+table.grid()
+
+
+productLabel = Label(right, text="Order", bg="green",
+                     width=38, foreground="white")
+productLabel.grid(row=0, column=0)
 
 
 root.mainloop()
