@@ -11,7 +11,11 @@ root.resizable(0, 0)
 
 
 def searchItem(*args):
-    print(txt.get())
+    itemDict = searchSort(txt.get())
+    for i in table.get_children():
+        table.delete(i)
+    for i, key in enumerate(itemDict, 1):
+        table.insert(parent='', index='end', iid=i, text='',values=(i, key, itemDict[key]))
 
 
 def leave(*args):
@@ -19,12 +23,12 @@ def leave(*args):
 
 
 # ช่องหาสินค้า
+
 txt = StringVar()
 txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
 search = Entry(root, width=44, textvariable=txt)
 search.pack(padx=5, pady=10, anchor=E)
 search.bind("<Leave>", leave)
-
 # goSearch = Button(left, text="Go!", bg="#7ADC6F", activebackground="#61b058", padx=10)
 # goSearch.grid(row=0, column=2)
 
@@ -50,15 +54,16 @@ def loginToggle(*args):
     if adminLoggedin.get():
         myMenu.delete(1)
         # ปุ่ม logout เมื่อกดจะให้ยืนยันอีกที
-        myMenu.add_cascade(label="Logout",
-                           command=lambda: adminLoggedin.set(False) if messagebox.askyesno("Logout?", "Are you sure?") else None)
-        myMenu.add_cascade(label="Add")
-        myMenu.add_cascade(label="Edit")
-        myMenu.add_cascade(label="Remove")
+        
+        myMenu.add_cascade(label="เพิ่มข้อมูล")
+        myMenu.add_cascade(label="แก้ไขข้อมูล")
+        myMenu.add_cascade(label="ลบข้อมูล")
+        myMenu.add_cascade(label="ออกจากระบบ",
+                           command=lambda: adminLoggedin.set(False) if messagebox.askyesno("ออกจากระบบ?", "คุณแน่ใจใช่ไหมที่จะออกจากระบบ?") else None)
     else:
         myMenu.delete(1, 4)
         myMenu.add_cascade(
-            label="Login", command=lambda: LoginWindow(adminLoggedin))
+            label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
 
 # ตัวแปรในระบบ
@@ -69,10 +74,10 @@ adminLoggedin.trace_add("write", loginToggle)
 myMenu = Menu()
 root.config(menu=myMenu)
 # เพิ่มเมนูหลัก
-myMenu.add_cascade(label="Login", command=lambda: LoginWindow(adminLoggedin))
+myMenu.add_cascade(label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
 
-productLabel = Label(left, text="Product", bg="red",
+productLabel = Label(left, text="รายการสินค้า", bg="red",
                      width=74, foreground="white")
 productLabel.grid(row=0, column=0)
 
@@ -87,19 +92,25 @@ table.column("Name", anchor=W, width=360)
 table.column("Price", anchor=W, width=80)
 
 table.heading("#0", text="", anchor=W)
-table.heading("ID", text="ID", anchor=W)
-table.heading("Name", text="Name", anchor=W)
-table.heading("Price", text="Price", anchor=W)
+table.heading("ID", text="ลำดับ", anchor=W)
+table.heading("Name", text="ชื่อเมนู", anchor=W)
+table.heading("Price", text="ราคา (บาท)", anchor=W)
 
-for i in range(1, 21):
+
+def OnDoubleClick(event):
+    items = table.identify('item', event.x, event.y)
+    print("Key : ", table.item(items, "values"))
+
+
+for i, key in enumerate(itemDict, 1):
     table.insert(parent='', index='end', iid=i, text='',
-                 values=(i, 'Ninja'+str(i), 10+i))
+                 values=(i, key, itemDict[key]))
+table.bind("<Double-1>", OnDoubleClick)
 table.grid()
 
 
-productLabel = Label(right, text="Order", bg="green",
+productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",
                      width=38, foreground="white")
 productLabel.grid(row=0, column=0)
-
 
 root.mainloop()
