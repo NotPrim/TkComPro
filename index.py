@@ -5,7 +5,7 @@ from pages.System.Items import *
 root = Tk()
 root.title("python GUI")
 root.geometry("800x600+500+200")
-root.resizable(0, 0)
+root.resizable(0, 1)
 
 # หาสินค้า
 def searchItem(*args):
