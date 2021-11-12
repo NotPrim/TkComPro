@@ -2,6 +2,7 @@ from tkinter.font import BOLD
 from types import CellType
 from pages.UI.LoginPage import *
 from pages.System.Items import *
+from pages.UI.ItemInCart import *
 root = Tk()
 root.title("python GUI")
 root.geometry("800x600+500+200")
@@ -16,10 +17,6 @@ def searchItem(*args):
         table.insert(parent='', index='end', iid=i, text='',values=(i, key, itemDict[key]))
 
 
-def leave(*args):
-    root.focus()
-
-
 # ช่องหาสินค้า
 navbar = Frame(root)
 navbar.pack(fill="x")
@@ -28,7 +25,7 @@ txt = StringVar()
 txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
 search = Entry(navbar, width=44, textvariable=txt)
 search.pack(padx=5, pady=10,side=LEFT)
-search.bind("<Leave>", leave)
+search.bind("<Leave>", lambda *a: root.focus()) # เปลี่ยนมาใช้ lambda
 
 buyButton = Button(navbar,text="สั่งซื้อ",bg="#0D6EFD",fg="#fff",activebackground="#1C76FD",activeforeground="#fff")
 buyButton.pack(padx=5, pady=10,side=RIGHT)
@@ -97,19 +94,14 @@ table.heading("Name", text="ชื่อเมนู", anchor=W)
 table.heading("Price", text="ราคา (บาท)", anchor=W)
 
 
-countingRow = 1
-
 # เลือกสินค้า
 def OnDoubleClick(event):
     items = table.identify('item', event.x, event.y)
     itemData = table.item(items, "values")
     if len(itemData):
-        global countingRow
-        Label(right, text=f"{itemData[1]}").grid(row=countingRow, column=0, sticky=W)
-        Label(right, text=f"{itemData[2]}").grid(row=countingRow, column=1, sticky=E)
-        Button(right, text="นำออก",bg="#d33",fg="#fff",activebackground="#d11",activeforeground="#fff").grid(row=countingRow, column=2, sticky=E,pady=3)
-        countingRow += 1
+        addCartItem(right, itemData[1], itemData[2])
     print("Key : ", itemData)
+
 
 # เอารายการใส่ลงตาราง
 for i, key in enumerate(itemDict, 1):
