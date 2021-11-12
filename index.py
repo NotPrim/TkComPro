@@ -40,7 +40,7 @@ pane.paneconfig(left, minsize=520) # ตั้งค่าความกว้�
 
 # เพื่มพื้นที่ฝั่งขวา
 right = ttk.Frame(pane)
-right['borderwidth'] = 0
+right['borderwidth'] = 1
 right['relief'] = 'solid'
 pane.add(right)
 pane.paneconfig(right, minsize=300) # ตั้งค่าความกว้างขั้นต่ำ
@@ -90,12 +90,17 @@ table.heading("Name", text="ชื่อเมนู", anchor=W)
 table.heading("Price", text="ราคา (บาท)", anchor=W)
 
 
+countingRow = 1
 # เลือกสินค้า
 def OnDoubleClick(event):
     items = table.identify('item', event.x, event.y)
     itemData = table.item(items, "values")
     if len(itemData):
-        Label(right, text=f"{itemData[1]} {itemData[2]}").grid()
+        global countingRow
+        Label(right, text=f"{itemData[1]}").grid(row=countingRow, column=0, sticky=W)
+        Label(right, text=f"{itemData[2]}").grid(row=countingRow, column=1, sticky=E)
+        Button(right, text="นำออก").grid(row=countingRow, column=2, sticky=E)
+        countingRow += 1
     print("Key : ", itemData)
 
 
@@ -106,20 +111,21 @@ for i, key in enumerate(itemDict, 1):
 table.bind("<Double-1>", OnDoubleClick) # เมื่อดับเบิลคลิกที่สินค้าจะเรียก OnDoubleClick
 table.grid()
 
-# ตระกร้า แสดงสินค้าที่สั่ง
+# รถเข็น แสดงสินค้าที่สั่ง
 productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",width=38, foreground="white")
-productLabel.grid(row=0, column=0, columnspan=2)
-# basket = ttk.Treeview(right)
-# basket['columns'] = ('ID', 'Name', 'Price')
-# basket.column("#0", width=0, stretch=NO)
-# basket.column("ID", anchor=W, width=30)
-# basket.column("Name", anchor=W, width=100)
-# basket.column("Price", anchor=W, width=30)
+productLabel.grid(row=0, column=0, columnspan=3)
 
-# basket.heading("#0", text="", anchor=W)
-# basket.heading("ID", text="ลำดับ", anchor=W)
-# basket.heading("Name", text="ชื่อเมนู", anchor=W)
-# basket.heading("Price", text="ราคา (บาท)", anchor=W)
-# basket.grid(row=1)
+# cart = ttk.Treeview(right)
+# cart['columns'] = ('ID', 'Name', 'Price')
+# cart.column("#0", width=0, stretch=NO)
+# cart.column("ID", anchor=W, width=30)
+# cart.column("Name", anchor=W, width=100)
+# cart.column("Price", anchor=W, width=30)
+
+# cart.heading("#0", text="", anchor=W)
+# cart.heading("ID", text="ลำดับ", anchor=W)
+# cart.heading("Name", text="ชื่อเมนู", anchor=W)
+# cart.heading("Price", text="ราคา (บาท)", anchor=W)
+# cart.grid(row=1)
 
 root.mainloop()
