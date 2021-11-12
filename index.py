@@ -36,12 +36,14 @@ left = ttk.Frame(pane, width=200)
 left['borderwidth'] = 0
 left['relief'] = 'solid'
 pane.add(left)
+pane.paneconfig(left, minsize=520) # ตั้งค่าความกว้างขั้นต่ำ
 
 # เพื่มพื้นที่ฝั่งขวา
 right = ttk.Frame(pane)
 right['borderwidth'] = 0
 right['relief'] = 'solid'
 pane.add(right)
+pane.paneconfig(right, minsize=300) # ตั้งค่าความกว้างขั้นต่ำ
 
 
 # เปลี่ยนเมนูตามสถานะการ login
@@ -70,10 +72,10 @@ root.config(menu=myMenu)
 # เพิ่มเมนูหลัก
 myMenu.add_cascade(label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
+# สร้างตารางสำหรับกดสั่งสินค้า
 productLabel = Label(left, text="รายการสินค้า", bg="red", width=74, foreground="white")
 productLabel.grid(row=0, column=0)
 
-# สร้างตารางสำหรับกดสั่งสินค้า
 table = ttk.Treeview(left, height=300)
 table['columns'] = ('ID', 'Name', 'Price')
 
@@ -91,7 +93,10 @@ table.heading("Price", text="ราคา (บาท)", anchor=W)
 # เลือกสินค้า
 def OnDoubleClick(event):
     items = table.identify('item', event.x, event.y)
-    print("Key : ", table.item(items, "values"))
+    itemData = table.item(items, "values")
+    if len(itemData):
+        Label(right, text=f"{itemData[1]} {itemData[2]}").grid()
+    print("Key : ", itemData)
 
 
 # เอารายการใส่ลงตาราง
@@ -101,7 +106,20 @@ for i, key in enumerate(itemDict, 1):
 table.bind("<Double-1>", OnDoubleClick) # เมื่อดับเบิลคลิกที่สินค้าจะเรียก OnDoubleClick
 table.grid()
 
+# ตระกร้า แสดงสินค้าที่สั่ง
 productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",width=38, foreground="white")
-productLabel.grid(row=0, column=0)
+productLabel.grid(row=0, column=0, columnspan=2)
+# basket = ttk.Treeview(right)
+# basket['columns'] = ('ID', 'Name', 'Price')
+# basket.column("#0", width=0, stretch=NO)
+# basket.column("ID", anchor=W, width=30)
+# basket.column("Name", anchor=W, width=100)
+# basket.column("Price", anchor=W, width=30)
+
+# basket.heading("#0", text="", anchor=W)
+# basket.heading("ID", text="ลำดับ", anchor=W)
+# basket.heading("Name", text="ชื่อเมนู", anchor=W)
+# basket.heading("Price", text="ราคา (บาท)", anchor=W)
+# basket.grid(row=1)
 
 root.mainloop()
