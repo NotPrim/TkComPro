@@ -5,7 +5,7 @@ from pages.System.Items import *
 root = Tk()
 root.title("python GUI")
 root.geometry("800x600+500+200")
-root.resizable(0, 1)
+root.resizable(0, 0)
 
 # หาสินค้า
 def searchItem(*args):
@@ -21,11 +21,18 @@ def leave(*args):
 
 
 # ช่องหาสินค้า
+navbar = Frame(root)
+navbar.pack(fill="x")
+
 txt = StringVar()
 txt.trace_add("write", searchItem)  # เรียกฟังก์ชันทุกครั้งที่เราพิมพ์
-search = Entry(root, width=44, textvariable=txt)
-search.pack(padx=5, pady=10, anchor=E)
+search = Entry(navbar, width=44, textvariable=txt)
+search.pack(padx=5, pady=10,side=LEFT)
 search.bind("<Leave>", leave)
+
+buyButton = Button(navbar,text="สั่งซื้อ",bg="#0D6EFD",fg="#fff",activebackground="#1C76FD",activeforeground="#fff")
+buyButton.pack(padx=5, pady=10,side=RIGHT)
+
 
 # ตัวแบ่งหน้าจอ
 pane = PanedWindow(root)
@@ -73,7 +80,7 @@ root.config(menu=myMenu)
 myMenu.add_cascade(label="เข้าสู่ระบบ", command=lambda: LoginWindow(adminLoggedin))
 
 # สร้างตารางสำหรับกดสั่งสินค้า
-productLabel = Label(left, text="รายการสินค้า", bg="red", width=74, foreground="white")
+productLabel = Label(left, text="รายการสินค้า", bg="#062f3c", width=74, foreground="white")
 productLabel.grid(row=0, column=0)
 
 table = ttk.Treeview(left, height=300)
@@ -91,6 +98,7 @@ table.heading("Price", text="ราคา (บาท)", anchor=W)
 
 
 countingRow = 1
+
 # เลือกสินค้า
 def OnDoubleClick(event):
     items = table.identify('item', event.x, event.y)
@@ -99,10 +107,9 @@ def OnDoubleClick(event):
         global countingRow
         Label(right, text=f"{itemData[1]}").grid(row=countingRow, column=0, sticky=W)
         Label(right, text=f"{itemData[2]}").grid(row=countingRow, column=1, sticky=E)
-        Button(right, text="นำออก").grid(row=countingRow, column=2, sticky=E)
+        Button(right, text="นำออก",bg="#d33",fg="#fff",activebackground="#d11",activeforeground="#fff").grid(row=countingRow, column=2, sticky=E,pady=3)
         countingRow += 1
     print("Key : ", itemData)
-
 
 # เอารายการใส่ลงตาราง
 for i, key in enumerate(itemDict, 1):
@@ -112,7 +119,7 @@ table.bind("<Double-1>", OnDoubleClick) # เมื่อดับเบิล�
 table.grid()
 
 # รถเข็น แสดงสินค้าที่สั่ง
-productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="green",width=38, foreground="white")
+productLabel = Label(right, text="ยอดการสั่งซื้อ", bg="#059669",width=38, foreground="white")
 productLabel.grid(row=0, column=0, columnspan=3)
 
 # cart = ttk.Treeview(right)
