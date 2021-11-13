@@ -3,11 +3,12 @@ from types import CellType
 from pages.UI.LoginPage import *
 from pages.System.Items import *
 from pages.UI.ItemInCart import *
+from pages.UI.EditPage import *
 root = Tk()
 root.title("python GUI")
 root.geometry("800x600+500+200")
 root.resizable(0, 0)
-
+# ปุ่ม clear
 # หาสินค้า
 def searchItem(*args):
     itemDict = searchSort(txt.get()) # เรียงลำดับรายการใหม่
