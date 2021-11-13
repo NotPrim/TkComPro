@@ -49,6 +49,9 @@ class DataLine:
             this.editToggle()
             this.editToggle()
 
+    def extract(this):
+        return this.nameEntry.get(), this.priceEntry.get()
+
 
 class DataEditor:
     lineList = []
@@ -74,6 +77,11 @@ class DataEditor:
     def createAdd(this):
         this.addButton = Button(this.editor, text="เพิ่มรายการสินค้า", command=this.AddItem)
         this.addButton.grid(columnspan=4, sticky="nsew")
+
+    def saveToFile(this, fileName: str = "assets/list/ItemList.csv"):
+        file = open(fileName, "w")
+        file.writelines([",".join(data.extract()) for data in this.lineList])
+        
 
 if __name__ == "__main__":
     DataEditor()
