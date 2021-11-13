@@ -1,4 +1,6 @@
 from tkinter import *
+import sys
+sys.path.append('./')
 from pages.System.Items import *
 
 
