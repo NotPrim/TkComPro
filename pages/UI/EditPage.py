@@ -69,6 +69,7 @@ class DataEditor:
 
     def AddItem(this):
         this.addButton.destroy()
+        this.saveButton.destroy()
         this.lineList.append(DataLine(this.editor, "", "0", len(this.lineList) + 1, this.lineList))
         for i, dl in enumerate(this.lineList, 1):
             dl.setRow(i)
@@ -76,11 +77,14 @@ class DataEditor:
 
     def createAdd(this):
         this.addButton = Button(this.editor, text="เพิ่มรายการสินค้า", command=this.AddItem)
-        this.addButton.grid(columnspan=4, sticky="nsew")
+        this.addButton.grid(row=len(this.lineList) + 1, columnspan=2, sticky="nsew")
+        this.saveButton = Button(this.editor, text="บันทึก", command=this.saveToFile)
+        this.saveButton.grid(row=len(this.lineList) + 1, column=2, columnspan=2, sticky="nsew")
 
     def saveToFile(this, fileName: str = "assets/list/ItemList.csv"):
         file = open(fileName, "w")
-        file.writelines([",".join(data.extract()) for data in this.lineList])
+        file.writelines((",".join(data.extract()) + "\n" for data in this.lineList if data.extract()[0] != ""))
+        file.close()
         
 
 if __name__ == "__main__":
