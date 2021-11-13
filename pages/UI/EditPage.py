@@ -1,21 +1,22 @@
 from tkinter import *
 import sys
 sys.path.append('./')
-from pages.System.Items import *
+from pages.System.Items import loadItemList
 
 
 class DataLine:
     editable = False
-    def __init__(this, master: Misc, name: str, price: str, row: int):
-        this.nameEntry = Entry(master)
+    def __init__(this, master: Misc, name: str, price: str, row: int, selfContainer: list = list()):
+        this.nameEntry = Entry(master, width=40)
         this.nameEntry.insert(0, name)
         this.nameEntry.config(state='readonly')
-        this.priceEntry = Entry(master)
+        this.priceEntry = Entry(master, width=10)
         this.priceEntry.insert(0, price)
         this.priceEntry.config(state='readonly')
-        this.editButton = Button(master, text="แก้ไข", command=this.editToggle)
-        this.removetButton = Button(master, text="นำออก", command=this.selfDestroy)
+        this.editButton = Button(master, text="แก้ไข", width=5, command=this.editToggle)
+        this.removetButton = Button(master, text="นำออก", width=5, command=this.selfDestroy)
         this.setRow(row)
+        this.selfContainer = selfContainer
     
     def setRow(this, line: int):
         this.nameEntry.grid(row=line, column=0)
@@ -33,23 +34,46 @@ class DataLine:
             this.priceEntry.config(state='readonly')
 
     def selfDestroy(this):
-        this.nameEntry.destroy()
-        this.priceEntry.destroy()
-        this.editButton.destroy()
-        this.removetButton.destroy()
+        if len(this.selfContainer) > 1:
+            this.nameEntry.destroy()
+            this.priceEntry.destroy()
+            this.editButton.destroy()
+            this.removetButton.destroy()
+            if this.selfContainer.count(this):
+                this.selfContainer.remove(this)
+        else:
+            this.nameEntry.config(state=NORMAL)
+            this.priceEntry.config(state=NORMAL)
+            this.nameEntry.delete(0, END)
+            this.priceEntry.delete(0, END)
+            this.editToggle()
+            this.editToggle()
 
 
 class DataEditor:
+    lineList = []
     def __init__(this) -> None:
         this.items = loadItemList()
         this.editor = Tk()
         this.editor.title("Editor")
-        for i, k in enumerate(this.items, 0):
-            DataLine(this.editor, k, this.items[k], i)
-        # ทำปุ่ม Add ต่อท้าย
+        Label(this.editor, text="ชื่อสินค้า").grid(row=0, column=0)
+        Label(this.editor, text="ราคา").grid(row=0, column=1)
+        for i, k in enumerate(this.items, 1):
+            this.lineList.append(DataLine(this.editor, k, this.items[k], i, this.lineList))
+        this.createAdd()
         # ปุ่ม Save?
         this.editor.mainloop()
 
+    def AddItem(this):
+        this.addButton.destroy()
+        this.lineList.append(DataLine(this.editor, "", "0", len(this.lineList) + 1, this.lineList))
+        for i, dl in enumerate(this.lineList, 1):
+            dl.setRow(i)
+        this.createAdd()
+
+    def createAdd(this):
+        this.addButton = Button(this.editor, text="เพิ่มรายการสินค้า", command=this.AddItem)
+        this.addButton.grid(columnspan=4, sticky="nsew")
 
 if __name__ == "__main__":
     DataEditor()
