@@ -59,7 +59,7 @@ def loginToggle(*args):
     if adminLoggedin.get():
         myMenu.delete(1)
         # ปุ่ม logout เมื่อกดจะให้ยืนยันอีกที
-        myMenu.add_cascade(label="จัดการเมนู", command=lambda: DataEditor())
+        myMenu.add_cascade(label="จัดการเมนู", command=lambda: DataEditor(searchItem))
         myMenu.add_cascade(label="ออกจากระบบ",
                            command=lambda: adminLoggedin.set(False) if messagebox.askyesno("ออกจากระบบ?", "คุณแน่ใจใช่ไหมที่จะออกจากระบบ?") else None)
     else:

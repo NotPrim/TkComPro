@@ -2,9 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
+
 # สร้างหน้าต่าง login
-
-
 def LoginWindow(adminLoggedin: BooleanVar):
     # โหลดข้อมูลของ admin
     adminFile = open("assets/moderator/admin.txt", "r")
@@ -35,7 +34,6 @@ def LoginWindow(adminLoggedin: BooleanVar):
                          activebackground="#61b058", padx=10, command=closeWindow)
     loginButton.grid(row=2, column=0, columnspan=2, pady=5)
     window.mainloop()
-
 
 if __name__ == "__main__":
     LoginWindow(None)

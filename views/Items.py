@@ -28,6 +28,12 @@ def searchSort(search: str) -> dict:
 
 itemDict = loadItemList()
 
+
+def updateItemDict():
+    global itemDict
+    itemDict = loadItemList()
+
+
 if __name__ == "__main__":
     itemDict = searchSort('s')
     for k in itemDict:

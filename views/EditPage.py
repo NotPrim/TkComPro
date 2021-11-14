@@ -58,19 +58,18 @@ class DataLine:
 
 
 class DataEditor:
-    lineList = []
-
-    def __init__(this) -> None:
+    def __init__(this, callbackSearch = None) -> None:
         this.items = loadItemList()
         this.editor = Tk()
         this.editor.title("Editor")
         Label(this.editor, text="ชื่อสินค้า").grid(row=0, column=0)
         Label(this.editor, text="ราคา").grid(row=0, column=1)
+        this.lineList = []
         for i, k in enumerate(this.items, 1):
             this.lineList.append(
                 DataLine(this.editor, k, this.items[k], i, this.lineList))
         this.createAdd()
-        # ปุ่ม Save?
+        this.reTable = callbackSearch
         this.editor.mainloop()
 
     def AddItem(this):
@@ -97,6 +96,10 @@ class DataEditor:
         file.writelines((",".join(data.extract()) +
                         "\n" for data in this.lineList if data.extract()[0] != ""))
         file.close()
+        updateItemDict()
+        if this.reTable != None:
+            this.reTable()
+
 
 
 if __name__ == "__main__":
