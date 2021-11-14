@@ -3,9 +3,11 @@ from tkinter import ttk
 from tkinter import messagebox
 
 # สร้างหน้าต่าง login
+
+
 def LoginWindow(adminLoggedin: BooleanVar):
     # โหลดข้อมูลของ admin
-    adminFile = open("assets/user/admin.txt", "r")
+    adminFile = open("assets/moderator/admin.txt", "r")
     adminUser, adminPass = adminFile.read().split(',')
     adminFile.close()
 
@@ -15,7 +17,8 @@ def LoginWindow(adminLoggedin: BooleanVar):
             if adminLoggedin != None:
                 adminLoggedin.set(True)
         else:
-            messagebox.showerror("เข้าสู่ระบบไม่สำเร็จ", "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง")
+            messagebox.showerror("เข้าสู่ระบบไม่สำเร็จ",
+                                 "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง")
         window.destroy()
 
     # สร้างหน้าต่างเข้าสู่ระบบ
@@ -28,7 +31,8 @@ def LoginWindow(adminLoggedin: BooleanVar):
     passEntry = Entry(window, show='*')
     userEntry.grid(row=0, column=1)
     passEntry.grid(row=1, column=1, padx=5)
-    loginButton = Button(window, text="เข้าสู่ระบบ!", bg="#7ADC6F", activebackground="#61b058", padx=10, command=closeWindow)
+    loginButton = Button(window, text="เข้าสู่ระบบ!", bg="#7ADC6F",
+                         activebackground="#61b058", padx=10, command=closeWindow)
     loginButton.grid(row=2, column=0, columnspan=2, pady=5)
     window.mainloop()
 

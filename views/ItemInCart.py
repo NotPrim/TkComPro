@@ -26,3 +26,8 @@ def deleteCartItem(cartItem: CartItem):
     cartItem.priceLabel.destroy()
     cartItem.deleteButton.destroy()
     cartItemList.remove(cartItem)
+
+
+def clearCart():
+    for i in cartItemList[::-1]:
+        deleteCartItem(i)
